@@ -1,0 +1,29 @@
+# railway.toml
+
+# Định nghĩa các dịch vụ
+[build]
+  # Chỉ định lệnh build cho ứng dụng
+  command = "docker-compose build"
+
+[deploy]
+  # Chỉ định lệnh deploy cho ứng dụng
+  command = "docker-compose up -d"
+
+# Định nghĩa các dịch vụ
+[[services]]
+  name = "db"
+  type = "docker"
+  dockerfile = "docker/DB/Dockerfile"
+  port = 5432
+
+[[services]]
+  name = "be"
+  type = "docker"
+  dockerfile = "docker/BE/Dockerfile"
+  port = 8499
+
+[[services]]
+  name = "fe"
+  type = "docker"
+  dockerfile = "docker/FE/Dockerfile"
+  port = 8501
