@@ -51,7 +51,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
+    supervisor
 # Copy pg_search files từ builder
 COPY --from=builder /usr/lib/postgresql/16/lib/pg_search.so /usr/lib/postgresql/16/lib/
 COPY --from=builder /usr/share/postgresql/16/extension/pg_search* /usr/share/postgresql/16/extension/
@@ -61,7 +61,7 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
+    supervisor
 # Thêm pg_search vào shared_preload_libraries trong file cấu hình mặc định
 RUN echo "shared_preload_libraries = 'pg_search'" >> /usr/share/postgresql/postgresql.conf.sample
 
