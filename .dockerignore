@@ -1,0 +1,29 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+
+# Environment variables
+.env
+credentials/.env
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Database
+*.db
+
+# Exclude all credentials except the one we need
+credentials/*
+!credentials/communi_ai_6061cfee10dd.json 

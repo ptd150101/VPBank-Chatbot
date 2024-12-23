@@ -1,0 +1,21 @@
+# Ignore virtual environment folder
+venv/
+
+# Python
+__pycache__
+__pycache__/
+*.pyc
+
+# Environment variables and sensitive data
+.env
+credentials/.env
+*.db
+
+# IDE
+.vscode/
+
+# Data
+/data
+
+# Backup
+vpbank_db_backup.sql
