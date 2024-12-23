@@ -8,21 +8,19 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     libpq-dev \
     libicu-dev \
-    curl
-
-# Cài đặt streamlit cho frontend
-RUN pip install streamlit
+    curl \
+    supervisor
 
 # Tạo thư mục làm việc
 WORKDIR /app
 
-# Cài đặt uv cho backend
-RUN pip install uv
+# Cài đặt streamlit và uv cho backend
+RUN pip install streamlit uv
 
 # Copy và cài đặt requirements cho backend
 COPY requirements.txt .
-RUN uv pip install --system --target=/install "instructor[vertexai]"
-RUN uv pip install --system --target=/install -r requirements.txt
+RUN pip install --system --target=/install "instructor[vertexai]"
+RUN pip install --system --target=/install -r requirements.txt
 
 # Copy source code cho cả frontend và backend
 COPY . .
@@ -67,5 +65,8 @@ ENV PARADEDB_TELEMETRY=false
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["postgres"]
 
-# Chạy streamlit cho frontend
-CMD ["streamlit", "run", "streamlit/streamlit.py", "--server.port", "9000", "--server.address", "0.0.0.0"]
+# Tạo file cấu hình cho supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Chạy supervisor
+CMD ["/usr/bin/supervisord"]
