@@ -14,13 +14,13 @@ RUN apt-get update && apt-get install -y \
 # Tạo thư mục làm việc
 WORKDIR /app
 
-# Cài đặt streamlit và uv cho backend
-RUN pip install streamlit uv
+# Cài đặt pip và streamlit
+RUN pip install uv
 
 # Copy và cài đặt requirements cho backend
 COPY requirements.txt .
-RUN pip install --system --target=/install "instructor[vertexai]"
-RUN pip install --system --target=/install -r requirements.txt
+RUN uv pip install --system --target=/install "instructor[vertexai]"
+RUN uv pip install --system --target=/install -r requirements.txt
 
 # Copy source code cho cả frontend và backend
 COPY . .
@@ -44,6 +44,13 @@ RUN apt-get update && apt-get install -y \
 
 # Tạo image cuối cùng cho database
 FROM pgvector/pgvector:pg16
+
+# Cài đặt Python và pip trong image cuối cùng
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy pg_search files từ builder
 COPY --from=builder /usr/lib/postgresql/16/lib/pg_search.so /usr/lib/postgresql/16/lib/
