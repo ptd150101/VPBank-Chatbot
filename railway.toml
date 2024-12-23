@@ -1,6 +1,3 @@
-# railway.toml
-
-# Định nghĩa các dịch vụ
 [build]
   # Chỉ định lệnh build cho ứng dụng
   command = "docker-compose build"
