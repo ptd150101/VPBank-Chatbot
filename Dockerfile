@@ -15,12 +15,12 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Cài đặt pip và streamlit
-RUN pip install uv
+RUN pip install --no-cache-dir streamlit uv
 
 # Copy và cài đặt requirements cho backend
 COPY requirements.txt .
-RUN uv pip install --system --target=/install "instructor[vertexai]"
-RUN uv pip install --system --target=/install -r requirements.txt
+RUN pip install --no-cache-dir --system --target=/install "instructor[vertexai]"
+RUN pip install --no-cache-dir --system --target=/install -r requirements.txt
 
 # Copy source code cho cả frontend và backend
 COPY . .
@@ -45,13 +45,14 @@ RUN apt-get update && apt-get install -y \
 # Tạo image cuối cùng cho database
 FROM pgvector/pgvector:pg16
 
-# Cài đặt Python và pip trong image cuối cùng
+# Cài đặt Python, pip và supervisor trong image cuối cùng
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
+    supervisor \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-    supervisor
+
 # Copy pg_search files từ builder
 COPY --from=builder /usr/lib/postgresql/16/lib/pg_search.so /usr/lib/postgresql/16/lib/
 COPY --from=builder /usr/share/postgresql/16/extension/pg_search* /usr/share/postgresql/16/extension/
@@ -61,7 +62,7 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-    supervisor
+
 # Thêm pg_search vào shared_preload_libraries trong file cấu hình mặc định
 RUN echo "shared_preload_libraries = 'pg_search'" >> /usr/share/postgresql/postgresql.conf.sample
 
