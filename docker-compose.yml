@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: docker/DB/Dockerfile
+    ports:
+      - "5600:5600"
+    environment:
+      POSTGRES_PASSWORD: 123
+  be:
+    build:
+      context: .
+      dockerfile: docker/BE/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8499:8499"
+
+  fe:
+    build:
+      context: .
+      dockerfile: docker/FE/Dockerfile
+    depends_on:
+      - be
+    ports:
+      - "9000:9000"
