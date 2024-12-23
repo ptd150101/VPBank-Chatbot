@@ -44,14 +44,14 @@ COPY . .
 RUN echo '#!/bin/bash\n\
 \n\
 # Kiểm tra kết nối tới Railway PostgreSQL\n\
-until pg_isready -h junction.proxy.rlwy.net -p 57562 -U postgres; do\n\
+until pg_isready -h junction.proxy.rlwy.net -p 45318 -U postgres; do\n\
   echo "Waiting for Railway PostgreSQL to be ready..."\n\
   sleep 1\n\
 done\n\
 \n\
 # Tạo extensions nếu chưa có\n\
-PGPASSWORD=nFtmGBpELyqHsGMxgsAGQCHlzbKunzwx psql -h junction.proxy.rlwy.net -p 57562 -U postgres -d railway -c "CREATE EXTENSION IF NOT EXISTS vector;" || true\n\
-PGPASSWORD=nFtmGBpELyqHsGMxgsAGQCHlzbKunzwx psql -h junction.proxy.rlwy.net -p 57562 -U postgres -d railway -c "CREATE EXTENSION IF NOT EXISTS pg_search;" || true\n\
+PGPASSWORD=xBIDEotzIbAwwkWNkxGhcKvgYUggyvwF psql -h junction.proxy.rlwy.net -p 45318 -U postgres -d railway -c "CREATE EXTENSION IF NOT EXISTS vector;" || true\n\
+PGPASSWORD=xBIDEotzIbAwwkWNkxGhcKvgYUggyvwF psql -h junction.proxy.rlwy.net -p 45318 -U postgres -d railway -c "CREATE EXTENSION IF NOT EXISTS pg_search;" || true\n\
 \n\
 # Start backend\n\
 python3 source/run.py &\n\
